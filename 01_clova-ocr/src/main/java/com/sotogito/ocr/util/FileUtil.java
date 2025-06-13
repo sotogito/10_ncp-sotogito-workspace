@@ -1,4 +1,4 @@
-package com.sotogito.util;
+package com.sotogito.ocr.util;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;

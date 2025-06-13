@@ -1,4 +1,4 @@
-package com.sotogito.util;
+package com.sotogito.ocr.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;

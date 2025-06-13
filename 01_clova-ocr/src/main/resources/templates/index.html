@@ -1,36 +1,43 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+  <meta charset="UTF-8">
+  <title>Title</title>
 </head>
 <body>
-    <h2>NAVER CLOVA OCR</h2>
+<h2>Naver Clova OCR</h2>
 
-    <form id="ocr-form" action="">
-        <select name="type" id="">
-            <option value="general">일반</option>
-            <option value="template">템플릿
-            </option>
-        </select>
-        <input type="file" name="file" accept="image/*" required>
-        <input type="button" value="판독요청">
-    </form>
+<form id="ocr-form">
+  <select name="type">
+    <option value="general">일반</option>
+    <option value="template">템플릿</option>
+  </select>
+  <input type="file" name="file" accept="image/*" required>
+  <input type="button" value="판독요청" id="ocr-btn">
+</form>
 
-    <h3>OCR 결과</h3>
-    <div id="result">판독 전 입니다.</div>
+<h3>OCR 결과</h3>
+<div id="result">판독 전 입니다.</div>
 
-    <script>
-        document.getElementById('ocr-btn').addEventListener('click', (e) => {
-            let formData = new FormData(document.getElementById('ocr-form'));
+<script>
+  document.getElementById('ocr-btn').addEventListener('click', (e) => {
+    let formData = new FormData(document.getElementById('ocr-form'));
 
-            fetch('[[@{/upload}]]', {
-                method: 'POST',
-                body: formData
-            })
-                .then(response -)
-        })
-    </script>
+    fetch('[[@{/upload}]]', {
+      method: 'POST',
+      body: formData
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+
+        const {message, result} = data;
+        console.log(JSON.parse(result));
+      })
+  })
+
+</script>
+
 
 </body>
 </html>
