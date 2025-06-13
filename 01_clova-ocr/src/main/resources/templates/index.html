@@ -5,38 +5,50 @@
   <title>Title</title>
 </head>
 <body>
-<h2>Naver Clova OCR</h2>
+  <h2>Naver Clova OCR</h2>
 
-<form id="ocr-form">
-  <select name="type">
-    <option value="general">일반</option>
-    <option value="template">템플릿</option>
-  </select>
-  <input type="file" name="file" accept="image/*" required>
-  <input type="button" value="판독요청" id="ocr-btn">
-</form>
+  <form id="ocr-form">
+    <select name="type">
+      <option value="general">일반</option>
+      <option value="template">템플릿</option>
+    </select>
+    <input type="file" name="file" accept="image/*" required>
+    <input type="button" value="판독요청" id="ocr-btn">
+  </form>
 
-<h3>OCR 결과</h3>
-<div id="result">판독 전 입니다.</div>
+  <h3>OCR 결과</h3>
+  <div id="result">판독 전 입니다.</div>
 
-<script>
-  document.getElementById('ocr-btn').addEventListener('click', (e) => {
-    let formData = new FormData(document.getElementById('ocr-form'));
+  <script>
+    document.getElementById('ocr-btn').addEventListener('click', (e) => {
+      let formData = new FormData(document.getElementById('ocr-form'));
 
-    fetch('[[@{/upload}]]', {
-      method: 'POST',
-      body: formData
-    })
-      .then(response => response.json())
-      .then(data => {
-        console.log(data);
-
-        const {message, result} = data;
-        console.log(JSON.parse(result));
+      fetch('[[@{/upload}]]', {
+        method: 'POST',
+        body: formData
       })
-  })
+        .then(response => response.json())
+        .then(data => {
+          const {message, result} = data;
+          const ocrResult = JSON.parse(result).images[0].fields;
 
-</script>
+          if(formData.get('type') === 'general') {
+            document.getElementById("result").innerHTML
+              = ocrResult.map(obj => `<p>${obj.inferText}</p>`).join('');
+          }else {
+            document.getElementById("result").innerHTML
+              = '<table border="1">'
+              + ocrResult.map(obj => `<tr>
+                                        <th>${obj.name}</th>
+                                        <td>${obj.inferText}</td>
+                                      </tr>`)
+              + '</table>';
+          }
+          alert(message)
+        })
+    })
+
+  </script>
 
 
 </body>
